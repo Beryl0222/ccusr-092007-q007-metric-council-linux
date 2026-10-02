@@ -1,8 +1,47 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "record_id": "sample-007",
   "domain": "metric_council",
   "occurred_at": "2026-09-20T09:00:00+08:00",
-  "revision": 1,
-  "source": "业务样例"
+  "revision": 2,
+  "source": "业务样例",
+
+  "code": "CULT_CONSUME",
+  "name": "居民文化消费额",
+  "definition": "辖区内居民在数字展陈、文旅联票及持证平台创作者服务上发生的最终消费额。计入：数字展陈门票及展项付费；文旅联票票面额（剔除联票捆绑的市内交通段）；平台创作者从居民端取得的内容与服务收入。不计入：政府购买服务、企业间（B2B）结算、同一笔活动经平台与线下双通道的重复入账。",
+  "unit": "CNY_WAN",
+  "industries": ["R89", "R90", "I64"],
+  "data_sources": [
+    {
+      "source_id": "ds-digital-exhibit",
+      "name": "数字展陈场馆报送（脱敏样例）",
+      "granularity": "aggregated",
+      "reporting_lag_days": 30,
+      "industries": ["R90"]
+    },
+    {
+      "source_id": "ds-combo-ticket",
+      "name": "文旅联票清分平台（脱敏样例）",
+      "granularity": "aggregated",
+      "reporting_lag_days": 45,
+      "industries": ["R89"]
+    },
+    {
+      "source_id": "ds-platform-creator",
+      "name": "内容平台创作者收入汇总（脱敏样例）",
+      "granularity": "aggregated",
+      "reporting_lag_days": 60,
+      "industries": ["I64"]
+    }
+  ],
+  "dedup": {
+    "identity_keys": ["region_code", "activity_id", "period", "channel"],
+    "hierarchy_rule": "bottom_up",
+    "exclusions": ["combo_ticket_transport_segment", "b2b_settlement"]
+  },
+  "effective": {
+    "start": "2026-01-01"
+  },
+  "submitting_dept": "文化产业规划处",
+  "status": "in_review"
 }
