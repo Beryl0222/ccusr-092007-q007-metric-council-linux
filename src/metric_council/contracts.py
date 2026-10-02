@@ -1,20 +1,13 @@
-"""读取项目已确认的最小数据合同，不包含业务流程实现。"""
+"""读取项目已确认的最小数据合同，不包含业务流程实现。
+
+完整提案结构见 :mod:`metric_council.proposals`；本模块保留信封合同
+（``schema_version`` / ``record_id`` / ``domain`` / ``occurred_at`` /
+``revision`` / ``source``）及其读取入口，使既有调用方不受影响——
+``load_record`` 只取信封字段，忽略提案文件中的前向新增字段。
+"""
 
 from __future__ import annotations
 
-import json
-from dataclasses import dataclass
-from pathlib import Path
+from .proposals import DomainRecord, load_record
 
-@dataclass(frozen=True)
-class DomainRecord:
-    schema_version: int
-    record_id: str
-    domain: str
-    occurred_at: str
-    revision: int
-    source: str
-
-def load_record(path: Path) -> DomainRecord:
-    payload = json.loads(path.read_text(encoding="utf-8"))
-    return DomainRecord(**payload)
+__all__ = ["DomainRecord", "load_record"]
